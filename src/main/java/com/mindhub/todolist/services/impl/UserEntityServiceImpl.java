@@ -2,6 +2,7 @@ package com.mindhub.todolist.services.impl;
 
 import com.mindhub.todolist.dtos.TaskEntityDTO.TaskEntityResponseDTO;
 import com.mindhub.todolist.dtos.UserEntityDTO.*;
+import com.mindhub.todolist.exceptions.ApplicationException;
 import com.mindhub.todolist.models.TaskEntity;
 import com.mindhub.todolist.models.UserEntity;
 import com.mindhub.todolist.repositorys.ITaskEntityRepository;
@@ -25,6 +26,9 @@ public class UserEntityServiceImpl implements IUserEntityService {
 
     @Override
     public UserEntityResponseDTO saveUserEntity(UserEntityRequestDTO userEntityRequestDTO) {
+        if (userEntityRepository.existsByEmail(userEntityRequestDTO.email())) {
+            throw new ApplicationException("email", "El email ya existe en la base de datos");
+        }
         UserEntity userEntity = new UserEntity(
                 userEntityRequestDTO.username(),
                 userEntityRequestDTO.password(),

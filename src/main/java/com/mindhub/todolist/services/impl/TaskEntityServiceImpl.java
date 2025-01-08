@@ -1,8 +1,6 @@
 package com.mindhub.todolist.services.impl;
 
-import com.mindhub.todolist.dtos.TaskEntityDTO.TaskEntityRequestDTO;
-import com.mindhub.todolist.dtos.TaskEntityDTO.TaskEntityResponseDTO;
-import com.mindhub.todolist.dtos.TaskEntityDTO.TaskEntityUpdateDTO;
+import com.mindhub.todolist.dtos.TaskEntityDTO.*;
 import com.mindhub.todolist.models.TaskEntity;
 import com.mindhub.todolist.models.UserEntity;
 import com.mindhub.todolist.repositorys.ITaskEntityRepository;

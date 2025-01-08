@@ -27,7 +27,7 @@ public class UserEntityController {
             UserEntityResponseDTO userEntityResponseDTO = userEntityService.saveUserEntity(userEntityRequestDTO);
             return new ResponseEntity<>(userEntityResponseDTO, HttpStatus.CREATED);
         } catch (ApplicationException e) {
-            throw new ApplicationException(" Ha ocurrido un error " + e.getMessage());
+            throw new ApplicationException(" Ha ocurrido un error en el campo " + e.getCampo() + ", Descripcion: "+e.getMessage());
         }
     }
 
