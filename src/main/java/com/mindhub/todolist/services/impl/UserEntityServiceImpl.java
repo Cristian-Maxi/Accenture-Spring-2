@@ -11,6 +11,7 @@ import com.mindhub.todolist.services.IUserEntityService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ public class UserEntityServiceImpl implements IUserEntityService {
     private ITaskEntityRepository taskEntityRepository;
 
     @Override
+    @Transactional
     public UserEntityResponseDTO saveUserEntity(UserEntityRequestDTO userEntityRequestDTO) {
         if (userEntityRepository.existsByEmail(userEntityRequestDTO.email())) {
             throw new ApplicationException("email", "El email ya existe en la base de datos");
@@ -55,6 +57,7 @@ public class UserEntityServiceImpl implements IUserEntityService {
     }
 
     @Override
+    @Transactional
     public UserEntityResponseDTO update(UserEntityUpdateDTO userEntityUpdateDTO) {
         UserEntity userEntity = userEntityRepository.findById(userEntityUpdateDTO.id())
                 .orElseThrow(() -> new EntityNotFoundException("El ID del usuario no encontrado"));

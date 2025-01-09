@@ -9,6 +9,7 @@ import com.mindhub.todolist.services.ITaskEntityService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +29,7 @@ public class TaskEntityServiceImpl implements ITaskEntityService {
     }
 
     @Override
+    @Transactional
     public TaskEntityResponseDTO saveTask(TaskEntityRequestDTO taskEntityRequestDTO) {
         UserEntity userEntity = userEntityRepository.findById(taskEntityRequestDTO.usuarioId())
                 .orElseThrow(() -> new IllegalArgumentException("No se encontró el ID del usuario ingresado"));
@@ -58,6 +60,7 @@ public class TaskEntityServiceImpl implements ITaskEntityService {
     }
 
     @Override
+    @Transactional
     public TaskEntityResponseDTO update(TaskEntityUpdateDTO taskEntityUpdateDTO) {
         TaskEntity taskEntity = taskEntityRepository.findById(taskEntityUpdateDTO.id())
                 .orElseThrow(() -> new EntityNotFoundException("El ID de la tarea no fue encontrada"));
