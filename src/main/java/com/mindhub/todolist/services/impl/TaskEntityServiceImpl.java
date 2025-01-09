@@ -1,10 +1,11 @@
 package com.mindhub.todolist.services.impl;
 
 import com.mindhub.todolist.dtos.TaskEntityDTO.*;
+import com.mindhub.todolist.mappers.TaskEntityMapper;
 import com.mindhub.todolist.models.TaskEntity;
 import com.mindhub.todolist.models.UserEntity;
-import com.mindhub.todolist.repositorys.ITaskEntityRepository;
-import com.mindhub.todolist.repositorys.IUserEntityRepository;
+import com.mindhub.todolist.repositories.ITaskEntityRepository;
+import com.mindhub.todolist.repositories.IUserEntityRepository;
 import com.mindhub.todolist.services.ITaskEntityService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,24 +40,30 @@ public class TaskEntityServiceImpl implements ITaskEntityService {
                 taskEntityRequestDTO.status(),
                 userEntity);
         taskEntityRepository.save(taskEntity);
-        TaskEntityResponseDTO taskEntityResponseDTO = new TaskEntityResponseDTO(
-                taskEntity.getId(),
-                taskEntity.getTitle(),
-                taskEntity.getDescription(),
-                taskEntity.getStatus());
-        return taskEntityResponseDTO;
+        // Sin Mapper
+//        TaskEntityResponseDTO taskEntityResponseDTO = new TaskEntityResponseDTO(
+//                taskEntity.getId(),
+//                taskEntity.getTitle(),
+//                taskEntity.getDescription(),
+//                taskEntity.getStatus());
+//        return taskEntityResponseDTO;
+        // Con Mapper
+        return TaskEntityMapper.toTaskResponseDTO(taskEntity);
     }
 
     @Override
     public List<TaskEntityResponseDTO> getAll() {
         List<TaskEntity> taskEntities = taskEntityRepository.findAll();
-        List<TaskEntityResponseDTO> taskEntityResponseDTOS = taskEntities.stream()
-                .map(taskEntity -> new TaskEntityResponseDTO(
-                        taskEntity.getId(),
-                        taskEntity.getTitle(),
-                        taskEntity.getDescription(),
-                        taskEntity.getStatus())).collect(Collectors.toList());
-        return taskEntityResponseDTOS;
+        // Sin Mapper
+//        List<TaskEntityResponseDTO> taskEntityResponseDTOS = taskEntities.stream()
+//                .map(taskEntity -> new TaskEntityResponseDTO(
+//                        taskEntity.getId(),
+//                        taskEntity.getTitle(),
+//                        taskEntity.getDescription(),
+//                        taskEntity.getStatus())).collect(Collectors.toList());
+//        return taskEntityResponseDTOS;
+        // Con Mapper
+        return TaskEntityMapper.toTaskResponseDTOList(taskEntities);
     }
 
     @Override
@@ -74,11 +81,14 @@ public class TaskEntityServiceImpl implements ITaskEntityService {
             taskEntity.setStatus(taskEntityUpdateDTO.status());
         }
         taskEntityRepository.save(taskEntity);
-        return new TaskEntityResponseDTO(
-                taskEntity.getId(),
-                taskEntity.getTitle(),
-                taskEntity.getDescription(),
-                taskEntity.getStatus());
+        // Sin Mapper
+//        return new TaskEntityResponseDTO(
+//                taskEntity.getId(),
+//                taskEntity.getTitle(),
+//                taskEntity.getDescription(),
+//                taskEntity.getStatus());
+        // Con Mapper
+        return TaskEntityMapper.toTaskResponseDTO(taskEntity);
     }
 
     @Override

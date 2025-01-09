@@ -1,4 +1,4 @@
-package com.mindhub.todolist.repositorys;
+package com.mindhub.todolist.repositories;
 
 import com.mindhub.todolist.models.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

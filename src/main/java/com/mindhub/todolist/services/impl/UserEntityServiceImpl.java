@@ -3,10 +3,12 @@ package com.mindhub.todolist.services.impl;
 import com.mindhub.todolist.dtos.TaskEntityDTO.TaskEntityResponseDTO;
 import com.mindhub.todolist.dtos.UserEntityDTO.*;
 import com.mindhub.todolist.exceptions.ApplicationException;
+import com.mindhub.todolist.mappers.TaskEntityMapper;
+import com.mindhub.todolist.mappers.UserEntityMapper;
 import com.mindhub.todolist.models.TaskEntity;
 import com.mindhub.todolist.models.UserEntity;
-import com.mindhub.todolist.repositorys.ITaskEntityRepository;
-import com.mindhub.todolist.repositorys.IUserEntityRepository;
+import com.mindhub.todolist.repositories.ITaskEntityRepository;
+import com.mindhub.todolist.repositories.IUserEntityRepository;
 import com.mindhub.todolist.services.IUserEntityService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,23 +39,29 @@ public class UserEntityServiceImpl implements IUserEntityService {
                 userEntityRequestDTO.email()
         );
         userEntityRepository.save(userEntity);
-        UserEntityResponseDTO userEntityResponseDTO = new UserEntityResponseDTO(
-                userEntity.getId(),
-                userEntity.getUsername(),
-                userEntity.getEmail()
-        );
-        return userEntityResponseDTO;
+        // Sin Mapper
+//        UserEntityResponseDTO userEntityResponseDTO = new UserEntityResponseDTO(
+//                userEntity.getId(),
+//                userEntity.getUsername(),
+//                userEntity.getEmail()
+//        );
+//        return userEntityResponseDTO;
+        // Con Mapper
+        return UserEntityMapper.toUserResponseDTO(userEntity);
     }
 
     @Override
     public List<UserEntityResponseDTO> getAll() {
         List<UserEntity> userEntities = userEntityRepository.findAll();
-        List<UserEntityResponseDTO> userEntityResponseDTOS = userEntities.stream()
-                .map(userEntity -> new UserEntityResponseDTO(
-                        userEntity.getId(),
-                        userEntity.getUsername(),
-                        userEntity.getEmail())).collect(Collectors.toList());
-        return userEntityResponseDTOS;
+        // Sin Mapper
+//        List<UserEntityResponseDTO> userEntityResponseDTOS = userEntities.stream()
+//                .map(userEntity -> new UserEntityResponseDTO(
+//                        userEntity.getId(),
+//                        userEntity.getUsername(),
+//                        userEntity.getEmail())).collect(Collectors.toList());
+//        return userEntityResponseDTOS;
+        // Con Mapper
+        return UserEntityMapper.toUserResponseDTOList(userEntities);
     }
 
     @Override
@@ -71,10 +79,13 @@ public class UserEntityServiceImpl implements IUserEntityService {
             userEntity.setEmail(userEntityUpdateDTO.email());
         }
         userEntityRepository.save(userEntity);
-        return new UserEntityResponseDTO(
-                userEntity.getId(),
-                userEntity.getUsername(),
-                userEntity.getEmail());
+        // Sin Mapper
+//        return new UserEntityResponseDTO(
+//                userEntity.getId(),
+//                userEntity.getUsername(),
+//                userEntity.getEmail());
+        // Con Mapper
+        return UserEntityMapper.toUserResponseDTO(userEntity);
     }
 
     @Override
@@ -92,15 +103,22 @@ public class UserEntityServiceImpl implements IUserEntityService {
         if (taskEntity.isEmpty()) {
             throw new EntityNotFoundException("No se encontraron tareas para el usuario con ID: " + id);
         }
-        UserEntityTasksResponseDTO userTaks = new UserEntityTasksResponseDTO(
+        // Sin Mapper
+//        UserEntityTasksResponseDTO userTaks = new UserEntityTasksResponseDTO(
+//                userEntity.getId(),
+//                userEntity.getUsername(),
+//                taskEntity.stream().map(task -> new TaskEntityResponseDTO(
+//                        task.getId(),
+//                        task.getTitle(),
+//                        task.getDescription(),
+//                        task.getStatus())).collect(Collectors.toList()));
+//        return userTaks;
+        // Con Mapper
+        return new UserEntityTasksResponseDTO(
                 userEntity.getId(),
                 userEntity.getUsername(),
-                taskEntity.stream().map(task -> new TaskEntityResponseDTO(
-                        task.getId(),
-                        task.getTitle(),
-                        task.getDescription(),
-                        task.getStatus())).collect(Collectors.toList()));
-        return userTaks;
+                TaskEntityMapper.toTaskResponseDTOList(taskEntity)
+        );
     }
 
     @Override
